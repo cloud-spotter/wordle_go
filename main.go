@@ -39,7 +39,7 @@ func main() {
 					// %d gets replaced by (i+1), %c gets replaced by guess[i]
 					fmt.Printf("GREEN - Position %d: %c is correct!\n", i+1, guess[i])
 				} else if strings.Contains(target, string(guess[i])) {
-						fmt.Printf("YELLOW - Position %d: %c is in the target word but not in this position.\n", i+1, guess[i])
+					fmt.Printf("YELLOW - Position %d: %c is in the target word but not in this position.\n", i+1, guess[i])
 				} else {
 					// (Placeholders get filled in order by the arguments provided after the format string)
 					fmt.Printf("GREY - Position %d: %c is not in the target word.\n", i+1, guess[i])
