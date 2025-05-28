@@ -1,5 +1,5 @@
-// Wordle game prep (step 4) - introduces a Go string function
-// Step 4 adds case-handling for user guesses 
+// Wordle game prep (step 5) - introduces another Go string function (strings.Contains)
+// Step 5 checks whether each letter in the guess exists in the target word
 
 package main
 
