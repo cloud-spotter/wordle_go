@@ -1,9 +1,12 @@
-// Wordle game prep (step 3) - introduces formatted printing with placeholders (%d, %c)
-// Step 3 gives letter-by-letter feedback if the user's (whole-word) guess is incorrect 
+// Wordle game prep (step 4) - introduces a Go string function
+// Step 4 adds case-handling for user guesses 
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
@@ -12,13 +15,13 @@ func main() {
 	maxAttempts := 3
 	attempts := 0
 
-	// Print welcome message to console
 	fmt.Println("Welcome to Wordle! (mode: TRICKY)")
 
 	for attempts < maxAttempts {
 		fmt.Println("Guess the 5-letter word:")
 		// Read user input from console (&guess passes the memory address so Scan can modify the variable)
 		fmt.Scan(&guess)
+		guess = strings.ToUpper(guess) // Convert user input to upper case for comparison
 		attempts++ // Increment counter by 1 (this is a STATEMENT not expression as in JavaScript)
 
 		// Check if user's guess exactly matches target (case-sensitive)
