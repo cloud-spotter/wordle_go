@@ -1,5 +1,5 @@
-// Wordle game prep (step 2) - very basic program to introduce some basics in Go
-// Step 2 allows the user more that 1 guess (to guess the full word!) with a for loop and counter
+// Wordle game prep (step 3) - introduces formatted printing with placeholders (%d, %c)
+// Step 3 gives letter-by-letter feedback if the user's (whole-word) guess is incorrect 
 
 package main
 
@@ -26,7 +26,21 @@ func main() {
 			fmt.Println("Correct! You guessed it in", attempts, "attempts")
 			break // Exit loop on correct guess
 		} else {
-			fmt.Println("Incorrect. Try again! Remaining guesses:", maxAttempts-attempts)
+			fmt.Println("Incorrect")
+		
+			// Show letter-by-letter feedback
+			// Loop through each position in the 5-letter words
+			for i := 0; i < 5; i++ {
+				// Compare char at position i in both words
+				if guess[i] == target[i] {
+					// %d gets replaced by (i+1), %c gets replaced by guess[i]
+					fmt.Printf("Position %d: %c is correct!\n", i+1, guess[i])
+				} else {
+					// (Placeholders get filled in order by the arguments provided after the format string)
+					fmt.Printf("Position %d: %c is incorrect.\n", i+1, guess[i])
+				}
+			}
+			fmt.Println("Try again! Remaining guesses:", maxAttempts-attempts)
 		}
 	}
 	// If all attempts are used without a correct guess
