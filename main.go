@@ -1,5 +1,5 @@
-// Wordle game prep (step 5) - introduces another Go string function (strings.Contains)
-// Step 5 checks whether each letter in the guess exists in the target word
+// Wordle game prep (step 6) - introduces functions with parameters and return types, len() function and a continue statement 
+// Step 6 adds simple validation of user input and allows retries for invalid guesses
 
 package main
 
@@ -7,6 +7,11 @@ import (
 	"fmt"
 	"strings"
 )
+
+// Helper function for user input validation
+func isValidGuess(guess string) bool {
+	return len(guess) == 5
+}
 
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
@@ -21,6 +26,10 @@ func main() {
 		fmt.Println("Guess the 5-letter word:")
 		// Read user input from console (&guess passes the memory address so Scan can modify the variable)
 		fmt.Scan(&guess)
+		if !isValidGuess(guess) {
+			fmt.Println("Invalid input. Your guess needs exactly 5 letters.")
+			continue // Skip rest of loop if guess is invalid and go to next for loop iteration
+		}
 		guess = strings.ToUpper(guess) // Convert user input to upper case for comparison
 		attempts++ // Increment counter by 1 (this is a STATEMENT not expression as in JavaScript)
 
