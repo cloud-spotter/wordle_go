@@ -1,4 +1,4 @@
-// Wordle game prep (step 6) - introduces functions with parameters and return types, len() function and a continue statement 
+// Wordle game prep (step 6) - introduces functions with parameters and return types, len() function and a continue statement
 // Step 6 adds simple validation of user input and allows retries for invalid guesses
 
 package main
@@ -31,7 +31,7 @@ func main() {
 			continue // Skip rest of loop if guess is invalid and go to next for loop iteration
 		}
 		guess = strings.ToUpper(guess) // Convert user input to upper case for comparison
-		attempts++ // Increment counter by 1 (this is a STATEMENT not expression as in JavaScript)
+		attempts++                     // Increment counter by 1 (this is a STATEMENT not expression as in JavaScript)
 
 		// Check if user's guess exactly matches target (case-sensitive)
 		if guess == target {
@@ -39,7 +39,7 @@ func main() {
 			break // Exit loop on correct guess
 		} else {
 			fmt.Println("Incorrect")
-		
+
 			// Show letter-by-letter feedback
 			// Loop through each position in the 5-letter words
 			for i := 0; i < 5; i++ {
