@@ -1,5 +1,5 @@
-// Wordle game prep (step 6) - introduces functions with parameters and return types, len() function and a continue statement
-// Step 6 adds simple validation of user input and allows retries for invalid guesses
+// Wordle game prep (step 7) - introduces slices (Go's flexible lists that can grow/shrink)
+// Step 7 creates a word list with hardcoded selection (randomisation coming next)
 
 package main
 
@@ -15,7 +15,8 @@ func isValidGuess(guess string) bool {
 
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
-	target := "HELLO" // Define and initialise variable using short assignment operator (:=)
+	possibleWords := []string{"UNDER", "BRAIN", "FROGS", "OLIVE", "HELLO"} // Define and initialise slice with values
+	target := possibleWords[0] // Define and initialise variable using short assignment operator (:=)
 	var guess string  // Declare variable with explicit type (alternative to short assignment)
 	maxAttempts := 3
 	attempts := 0
@@ -33,7 +34,7 @@ func main() {
 		guess = strings.ToUpper(guess) // Convert user input to upper case for comparison
 		attempts++                     // Increment counter by 1 (this is a STATEMENT not expression as in JavaScript)
 
-		// Check if user's guess exactly matches target (case-sensitive)
+		// Check if user's guess exactly matches target
 		if guess == target {
 			fmt.Println("Correct! You guessed it in", attempts, "attempts")
 			break // Exit loop on correct guess
@@ -41,7 +42,7 @@ func main() {
 			fmt.Println("Incorrect")
 
 			// Show letter-by-letter feedback
-			// Loop through each position in the 5-letter words
+			// Loop through each position in the 5-letter word
 			for i := 0; i < 5; i++ {
 				// Compare char at position i in both words
 				if guess[i] == target[i] {
