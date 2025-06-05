@@ -1,5 +1,5 @@
-// Wordle game prep (step 8) - introduces math/rand package for random selection
-// Step 8 Uses rand.Intn() to allocate a target word
+// Wordle game prep (step 9) - introduces file I/O for a larger word list
+// Step 9 Uses <INSERT METHOD!> to read a plain text file and strings.Split() to break lines
 
 package main
 
