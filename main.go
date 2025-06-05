@@ -1,10 +1,11 @@
-// Wordle game prep (step 7) - introduces slices (Go's flexible lists that can grow/shrink)
-// Step 7 creates a word list with hardcoded selection (randomisation coming next)
+// Wordle game prep (step 8) - introduces math/rand package for random selection
+// Step 8 Uses rand.Intn() to allocate a target word
 
 package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strings"
 )
 
@@ -16,8 +17,9 @@ func isValidGuess(guess string) bool {
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
 	possibleWords := []string{"UNDER", "BRAIN", "FROGS", "OLIVE", "HELLO"} // Define and initialise slice with values
-	target := possibleWords[0] // Define and initialise variable using short assignment operator (:=)
-	var guess string  // Declare variable with explicit type (alternative to short assignment)
+	//target := possibleWords[0] // Define and initialise variable using short assignment operator (:=)
+	target := possibleWords[rand.Intn(len(possibleWords))] // Select random word (Intn returns 0 to length-1)
+	var guess string // Declare variable with explicit type (alternative to short assignment)
 	maxAttempts := 3
 	attempts := 0
 
