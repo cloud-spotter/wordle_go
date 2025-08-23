@@ -1,11 +1,13 @@
 // Wordle game prep (step 9) - introduces file I/O for a larger word list
-// Step 9 Uses <INSERT METHOD!> to read a plain text file and strings.Split() to break lines
+// Step 9 Uses os.ReadFile() to read a plain text file and strings.Split() to break into lines
 
 package main
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
+	"os"
 	"strings"
 )
 
@@ -14,10 +16,23 @@ func isValidGuess(guess string) bool {
 	return len(guess) == 5
 }
 
+func loadWords() []string {
+	fileContents, err := os.ReadFile("words.txt") // os.ReadFile() returns []byte (not string)
+	if err != nil {
+		log.Fatal(err)
+	}
+	words := strings.Split(string(fileContents), "\n") // Need to convert []byte to string
+	
+	// Remove whitespace
+	for i, word := range words {
+		words[i] = strings.TrimSpace(word)
+	}
+	return words
+}
+
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
-	possibleWords := []string{"UNDER", "BRAIN", "FROGS", "OLIVE", "HELLO"} // Define and initialise slice with values
-	//target := possibleWords[0] // Define and initialise variable using short assignment operator (:=)
+	possibleWords := loadWords() // Define and initialise slice with values
 	target := possibleWords[rand.Intn(len(possibleWords))] // Select random word (Intn returns 0 to length-1)
 	var guess string // Declare variable with explicit type (alternative to short assignment)
 	maxAttempts := 3
