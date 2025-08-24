@@ -1,5 +1,5 @@
-// Wordle game prep (step 9) - introduces file I/O for a larger word list
-// Step 9 Uses os.ReadFile() to read a plain text file and strings.Split() to break into lines
+// Wordle game prep (step 10) - improves guess feedback accuracy to users
+// Step 10 Uses a helper function to track each letter count and provide accurate feedback for duplicate letters in guesses
 
 package main
 
@@ -30,7 +30,7 @@ func loadWords() []string {
 		log.Fatal(err)
 	}
 	words := strings.Split(string(fileContents), "\n") // Need to convert []byte to string
-	
+
 	// Remove whitespace
 	for i, word := range words {
 		words[i] = strings.TrimSpace(word)
@@ -38,15 +38,52 @@ func loadWords() []string {
 	return words
 }
 
+// Helper function to track each letter in the target word to give accurate feedback for duplicates
+func getWordleFeedback(guess, target string) []string {
+	// Create a slice to store feedback for each position (always 5 letters)
+	feedback_slice := make([]string, 5)
+	// Create a map to count how many of each letter the target has
+	targetLetterCounts := make(map[rune]int)
+
+	// Count letters in target word
+	for _, char := range target { // _ means ignore the index, just give each character
+		targetLetterCounts[char]++ // +1 to the count for this char
+	}
+
+	// First pass: mark all exact matches (GREEN)
+	for i := 0; i < 5; i++ {
+		// Letter matches at this exact position
+		if guess[i] == target[i] {
+			feedback_slice[i] = "GREEN"
+			targetLetterCounts[rune(guess[i])]-- // Subtract 1 from available count
+		}
+	}
+
+	// Second pass: check remaining letters for wrong-position (YELLOW) or incorrect (GREY) matches
+	for i := 0; i < 5; i++ {
+		if feedback_slice[i] == "" { // Not already GREEN
+			if targetLetterCounts[rune(guess[i])] > 0 {
+				// Still available count for this letter in the target
+				feedback_slice[i] = "YELLOW"
+				targetLetterCounts[rune(guess[i])]-- // Subtract 1 from available count
+			} else { // No more of this letter available in target count
+				feedback_slice[i] = "GREY"
+			}
+		}
+	}
+	// Returns colour match pattern for each letter in target word
+	return feedback_slice
+}
+
 // main is the entry point - Go automatically calls this function when the program starts
 func main() {
-	possibleWords := loadWords() // Define and initialise slice with values
+	possibleWords := loadWords()                           // Define and initialise slice with values
 	target := possibleWords[rand.Intn(len(possibleWords))] // Select random word (Intn returns 0 to length-1)
 	var guess string                                       // Declare variable with explicit type (alternative to short assignment)
 	maxAttempts := 3
 	attempts := 0
 
-	fmt.Println("Welcome to Wordle! (mode: TRICKY)")
+	fmt.Println("Welcome to Wordle! (mode: REGULAR)")
 
 	for attempts < maxAttempts {
 		fmt.Println("Guess the 5-letter word:")
@@ -66,17 +103,19 @@ func main() {
 		} else {
 			fmt.Println("Incorrect")
 
-			// Show letter-by-letter feedback
-			// Loop through each position in the 5-letter word
+			// getWordleFeedback handles duplicated letters in the guess properly
+			guessFeedback := getWordleFeedback(guess, target)
+
+			// Loop through feedback results from output of letter-tracking function
 			for i := 0; i < 5; i++ {
-				// Compare char at position i in both words
-				if guess[i] == target[i] {
+				switch guessFeedback[i] {
+				case "GREEN":
 					// %s (1st) sets font colour, %s (2nd) resets colour, %d gets replaced by (i+1), %c gets replaced by guess[i]
 					fmt.Printf("%sGREEN%s - Position %d: %c is correct!\n", colourGreen, colourReset, i+1, guess[i])
-				} else if strings.Contains(target, string(guess[i])) {
+				case "YELLOW":
 					fmt.Printf("%sYELLOW%s - Position %d: %c is in the target word but not in this position.\n", colourYellow, colourReset, i+1, guess[i])
-				} else {
-					// (Placeholders get filled in order by the arguments provided after the format string)
+				case "GREY":
+					// Placeholders get filled in order by the arguments provided after the format string
 					fmt.Printf("%sGREY%s - Position %d: %c is not in the target word.\n", colourGrey, colourReset, i+1, guess[i])
 				}
 			}
