@@ -14,9 +14,9 @@ import (
 // Set up colour formatting for player's guess feedback
 const (
 	colourReset  = "\033[0m"
-	colourGreen  = "\033[32m"
-	colourYellow = "\033[33m"
-	colourGrey   = "\033[90m"
+	colourGreen  = "\033[1;32m" // Colours also + bold
+	colourYellow = "\033[1;33m"
+	colourGrey   = "\033[1;90m"
 )
 
 // Helper function for user input validation
@@ -110,15 +110,16 @@ func main() {
 			for i := 0; i < 5; i++ {
 				switch guessFeedback[i] {
 				case "GREEN":
-					// %s (1st) sets font colour, %s (2nd) resets colour, %d gets replaced by (i+1), %c gets replaced by guess[i]
-					fmt.Printf("%sGREEN%s - Position %d: %c is correct!\n", colourGreen, colourReset, i+1, guess[i])
+					// %s (1st) sets font colour, %s (2nd) resets colour, %c gets replaced by guess[i]
+					fmt.Printf("%s%c%s ", colourGreen, guess[i], colourReset)
 				case "YELLOW":
-					fmt.Printf("%sYELLOW%s - Position %d: %c is in the target word but not in this position.\n", colourYellow, colourReset, i+1, guess[i])
+					fmt.Printf("%s%c%s ", colourYellow, guess[i], colourReset)
 				case "GREY":
 					// Placeholders get filled in order by the arguments provided after the format string
-					fmt.Printf("%sGREY%s - Position %d: %c is not in the target word.\n", colourGrey, colourReset, i+1, guess[i])
+					fmt.Printf("%s%c%s ", colourGrey, guess[i], colourReset)
 				}
 			}
+			fmt.Println() // New line after all 5 letters
 			fmt.Println("Try again! Remaining guesses:", maxAttempts-attempts)
 		}
 	}
