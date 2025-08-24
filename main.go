@@ -21,7 +21,8 @@ func loadWords() []string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	words := strings.Split(string(fileContents), "\n") // Need to convert []byte to string
+	// Convert []byte to string, then strings.Split() returns slice of individual words
+	words := strings.Split(string(fileContents), "\n")
 	
 	// Remove whitespace
 	for i, word := range words {
