@@ -9,6 +9,14 @@ import (
 	"strings"
 )
 
+// Set up colour formatting for player's guess feedback
+const (
+	colourReset  = "\033[0m"
+	colourGreen  = "\033[32m"
+	colourYellow = "\033[33m"
+	colourGrey   = "\033[90m"
+)
+
 // Helper function for user input validation
 func isValidGuess(guess string) bool {
 	return len(guess) == 5
@@ -19,7 +27,7 @@ func main() {
 	possibleWords := []string{"UNDER", "BRAIN", "FROGS", "OLIVE", "HELLO"} // Define and initialise slice with values
 	//target := possibleWords[0] // Define and initialise variable using short assignment operator (:=)
 	target := possibleWords[rand.Intn(len(possibleWords))] // Select random word (Intn returns 0 to length-1)
-	var guess string // Declare variable with explicit type (alternative to short assignment)
+	var guess string                                       // Declare variable with explicit type (alternative to short assignment)
 	maxAttempts := 3
 	attempts := 0
 
@@ -38,7 +46,7 @@ func main() {
 
 		// Check if user's guess exactly matches target
 		if guess == target {
-			fmt.Println("Correct! You guessed it in", attempts, "attempts")
+			fmt.Printf("%sCorrect!%s You guessed it in %d attempts\n", colourGreen, colourReset, attempts)
 			break // Exit loop on correct guess
 		} else {
 			fmt.Println("Incorrect")
@@ -48,13 +56,13 @@ func main() {
 			for i := 0; i < 5; i++ {
 				// Compare char at position i in both words
 				if guess[i] == target[i] {
-					// %d gets replaced by (i+1), %c gets replaced by guess[i]
-					fmt.Printf("GREEN - Position %d: %c is correct!\n", i+1, guess[i])
+					// %s (1st) sets font colour, %s (2nd) resets colour, %d gets replaced by (i+1), %c gets replaced by guess[i]
+					fmt.Printf("%sGREEN%s - Position %d: %c is correct!\n", colourGreen, colourReset, i+1, guess[i])
 				} else if strings.Contains(target, string(guess[i])) {
-					fmt.Printf("YELLOW - Position %d: %c is in the target word but not in this position.\n", i+1, guess[i])
+					fmt.Printf("%sYELLOW%s - Position %d: %c is in the target word but not in this position.\n", colourYellow, colourReset, i+1, guess[i])
 				} else {
 					// (Placeholders get filled in order by the arguments provided after the format string)
-					fmt.Printf("GREY - Position %d: %c is not in the target word.\n", i+1, guess[i])
+					fmt.Printf("%sGREY%s - Position %d: %c is not in the target word.\n", colourGrey, colourReset, i+1, guess[i])
 				}
 			}
 			fmt.Println("Try again! Remaining guesses:", maxAttempts-attempts)
